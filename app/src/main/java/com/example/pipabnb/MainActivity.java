@@ -47,6 +47,9 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(MainActivity.this, "Ingreso de prueba correcto", Toast.LENGTH_SHORT).show();
 
+                    Intent principal = new Intent(MainActivity.this, Pantalla_principal.class);
+                    startActivity(principal);
+
                     /*
 
                     Intent <nombreIntent> = new Intent(<ActivityActual>.this,<ActivityDestino>.class);
@@ -54,8 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                    Intent principal = new Intent(MainActivity.this, Destino.class);
-                    startActivity(principal);
+
 
                      */
                 }

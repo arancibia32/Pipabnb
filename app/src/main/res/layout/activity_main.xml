@@ -9,6 +9,7 @@
     android:background="#FFFFFF">
 
     <!-- ENCABEZADO -->
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="147dp"
@@ -30,7 +31,7 @@
 
         <!-- BUSCADOR -->
         <EditText
-            android:id="@+id/etDestino"
+            android:id="@+id/input_destino"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Encuentra un destino..."
@@ -91,13 +92,12 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerAlojamientos"
             android:layout_width="match_parent"
-            android:layout_height="261dp"
-            android:layout_weight="1"
-            android:clipToPadding="false" />
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 
     <!-- MENÚ INFERIOR -->
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/menuInferior"
         android:layout_width="match_parent"
@@ -109,3 +109,5 @@
         app:menu="@menu/opcionesmenu"/>
 
 </LinearLayout>
+
+
