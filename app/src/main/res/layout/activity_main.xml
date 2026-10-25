@@ -12,19 +12,19 @@
     <!-- ENCABEZADO -->
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="147dp"
         android:background="#202020"
+        android:gravity="center"
         android:text="Pipabnb.com"
         android:textColor="#FFFFFF"
         android:textSize="24sp"
-        android:textStyle="bold"
-        android:gravity="center"/>
+        android:textStyle="bold" />
 
     <!-- CONTENIDO PRINCIPAL -->
     <LinearLayout
         android:id="@+id/pantallaBuscar"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="478dp"
         android:layout_weight="1"
         android:orientation="vertical"
         android:padding="16dp">
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:hint="Encuentra un destino..."
             android:inputType="text"
-            android:singleLine="true"/>
+            android:singleLine="true" />
 
         <!-- BÚSQUEDAS RECIENTES -->
         <Button
@@ -48,52 +48,53 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="39dp"
+            android:layout_marginTop="15dp"
             android:text="Búsquedas recientes"
             android:textColor="#222222"
-            android:textSize="16sp"
-            android:layout_marginTop="15dp"/>
+            android:textSize="16sp" />
 
         <LinearLayout
+            android:id="@+id/contenedor_recientes"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="57dp"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/reciente1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:backgroundTint="#E0E0E0"
                 android:text="La Serena"
-                android:textColor="#222222"
-                android:backgroundTint="#E0E0E0"/>
+                android:textColor="#222222" />
 
             <Button
                 android:id="@+id/reciente2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:backgroundTint="#E0E0E0"
                 android:text="Coquimbo"
-                android:textColor="#222222"
-                android:backgroundTint="#E0E0E0"/>
+                android:textColor="#222222" />
 
         </LinearLayout>
 
         <!-- RECOMENDACIONES -->
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="32dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="10dp"
             android:text="Recomendaciones"
             android:textColor="#222222"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="10dp"/>
+            android:textStyle="bold" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerAlojamientos"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="261dp"
             android:layout_weight="1"
-            android:clipToPadding="false"/>
+            android:clipToPadding="false" />
 
     </LinearLayout>
 
@@ -106,6 +107,6 @@
         app:itemIconTint="@android:color/white"
         app:itemTextColor="@android:color/white"
         app:labelVisibilityMode="labeled"
-        app:menu="@menu/menu_inferior"/>
+        app:menu="@menu/opcionesmenu"/>
 
 </LinearLayout>
