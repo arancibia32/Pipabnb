@@ -12,8 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class FavoritoAdapter
-        extends RecyclerView.Adapter<FavoritoAdapter.FavoritoViewHolder> {
+public class FavoritoAdapter extends RecyclerView.Adapter<FavoritoAdapter.FavoritoViewHolder> {
 
     private ArrayList<Favorito> lista;
 

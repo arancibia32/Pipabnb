@@ -76,7 +76,7 @@ public class Pantalla_principal extends AppCompatActivity {
             int id = menuItem.getItemId();
 
             if (id == R.id.nav_favoritos) {
-                Intent intent_fav = new Intent(Pantalla_principal.this,FavoritoAdapter.class);
+                Intent intent_fav = new Intent(Pantalla_principal.this,FavoritoActivity.class);
                 startActivity(intent_fav);
                 return true;
             }

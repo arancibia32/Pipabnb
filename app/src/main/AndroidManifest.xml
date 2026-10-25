@@ -13,6 +13,10 @@ xmlns:tools="http://schemas.android.com/tools">
     android:theme="@style/Theme.Pipabnb">
 
     <activity
+        android:name=".FavoritoActivity"
+        android:exported="false" />
+
+    <activity
         android:name=".DetalleAlojamientoActivity"
         android:exported="false" />
 
