@@ -1,5 +1,6 @@
 package com.example.pipabnb;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,39 +12,61 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class MainActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.login_activity); //PANTALLA LOGIN
 
-        EditText etCorreo = findViewById(R.id.etCorreo);
-        EditText etContrasena = findViewById(R.id.etContrasena);
-        Button btnIngresar = findViewById(R.id.btnIngresar);
+        EditText input_nombre = findViewById(R.id.input_nombre);
+        EditText input_contrasena= findViewById(R.id.input_contrasena);
+        Button btnIngresar = findViewById(R.id.btn_registrarse);
+
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         // Evento del botón Ingresar
         btnIngresar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String correo = etCorreo.getText().toString();
-                String contrasena = etContrasena.getText().toString();
+                String correo = input_nombre.getText().toString();
+                String contrasena = input_contrasena.getText().toString();
 
                 if (correo.trim().isEmpty() || contrasena.isEmpty()) {
                     Toast.makeText(MainActivity.this, "Complete todos los campos", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(MainActivity.this, "Ingreso de prueba correcto", Toast.LENGTH_SHORT).show();
+
+                    Intent principal = new Intent(MainActivity.this, Pantalla_principal.class);
+                    startActivity(principal);
+
+                    /*
+
+                    Intent <nombreIntent> = new Intent(<ActivityActual>.this,<ActivityDestino>.class);
+                    startActivity(<nombreIntent>);
+
+
+
+
+
+                     */
                 }
             }
         });
+
+
+
+
+
     }
 }
-

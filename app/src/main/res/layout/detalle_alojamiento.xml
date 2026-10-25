@@ -91,7 +91,7 @@
                 android:layout_height="175dp"
                 android:layout_marginTop="12dp"
                 android:background="#FFFFFF"
-                android:src="@drawable/foto1"
+
                 android:contentDescription="Imagen principal del alojamiento"
                 android:scaleType="centerCrop"/>
 
@@ -109,7 +109,7 @@
                     android:layout_weight="1"
                     android:layout_marginEnd="3dp"
                     android:background="#FFFFFF"
-                    android:src="@drawable/fotocama"
+
                     android:contentDescription="Segunda imagen del alojamiento"
                     android:scaleType="centerCrop"/>
 
@@ -120,7 +120,7 @@
                     android:layout_weight="1"
                     android:layout_marginStart="3dp"
                     android:background="#FFFFFF"
-                    android:src="@drawable/fotopiscina"
+
                     android:contentDescription="Tercera imagen del alojamiento"
                     android:scaleType="centerCrop"/>
 
