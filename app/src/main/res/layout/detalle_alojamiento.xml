@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainDetalle"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="#F1F2F4">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- ENCABEZADO -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:background="#171717"
+            android:gravity="center_vertical"
+            android:paddingTop="20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/btnVolver"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:text="←"
+                android:textSize="30sp"
+                android:textColor="#FFFFFF"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Alojamiento"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:gravity="center"/>
+
+            <View
+                android:layout_width="55dp"
+                android:layout_height="1dp"/>
+
+        </LinearLayout>
+
+        <!-- INFORMACIÓN DEL ALOJAMIENTO -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <!-- NOMBRE Y FAVORITO -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/btnFavorito"
+                    android:layout_width="48dp"
+                    android:layout_height="wrap_content"
+                    android:text="♡"
+                    android:textSize="32sp"
+                    android:textColor="#777777"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/txtNombreAlojamiento"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Departamento Peñuelas, Coquimbo"
+                    android:textSize="22sp"
+                    android:textColor="#666666"
+                    android:gravity="center"/>
+
+                <View
+                    android:layout_width="48dp"
+                    android:layout_height="1dp"/>
+
+            </LinearLayout>
+
+            <!-- IMAGEN PRINCIPAL -->
+            <ImageView
+                android:id="@+id/imagenPrincipal"
+                android:layout_width="match_parent"
+                android:layout_height="175dp"
+                android:layout_marginTop="12dp"
+                android:background="#FFFFFF"
+                android:src="@drawable/foto1"
+                android:contentDescription="Imagen principal del alojamiento"
+                android:scaleType="centerCrop"/>
+
+            <!-- IMÁGENES SECUNDARIAS -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="105dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imagenSecundaria1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="3dp"
+                    android:background="#FFFFFF"
+                    android:src="@drawable/fotocama"
+                    android:contentDescription="Segunda imagen del alojamiento"
+                    android:scaleType="centerCrop"/>
+
+                <ImageView
+                    android:id="@+id/imagenSecundaria2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginStart="3dp"
+                    android:background="#FFFFFF"
+                    android:src="@drawable/fotopiscina"
+                    android:contentDescription="Tercera imagen del alojamiento"
+                    android:scaleType="centerCrop"/>
+
+            </LinearLayout>
+
+            <!-- VALORACIÓN Y PRECIO -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="★★★★☆"
+                    android:textSize="21sp"
+                    android:textColor="#2196F3"/>
+
+                <TextView
+                    android:id="@+id/txtValoracion"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="4.2 (148 reseñas)"
+                    android:textSize="13sp"
+                    android:textColor="#777777"
+                    android:layout_marginStart="8dp"/>
+
+                <TextView
+                    android:id="@+id/txtPrecio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="$60.000\npor noche"
+                    android:textSize="15sp"
+                    android:textColor="#777777"
+                    android:gravity="center"/>
+
+            </LinearLayout>
+
+            <!-- DESCRIPCIÓN -->
+            <TextView
+                android:id="@+id/txtDescripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:text="Departamento frente a la playa en sector Peñuelas, Coquimbo. Ideal para una estadía cómoda y familiar."
+                android:textColor="#666666"
+                android:textSize="14sp"/>
+
+            <!-- SERVICIOS -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Servicios"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                android:textColor="#2196F3"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Wifi  •  Estacionamiento  •  Piscina  •  Terraza"
+                android:textSize="13sp"
+                android:textColor="#555555"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Cocina  •  Lavadora  •  TV de pantalla plana"
+                android:textSize="13sp"
+                android:textColor="#555555"/>
+
+            <!-- COMENTARIOS -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="Comentarios"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                android:textColor="#2196F3"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="12dp"
+                android:orientation="vertical"
+                android:background="#FFFFFF">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Víctor  ★★★★★"
+                    android:textColor="#2196F3"
+                    android:textSize="15sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Excelente ubicación y el anfitrión muy preocupado. Excelente experiencia."
+                    android:textColor="#555555"
+                    android:textSize="14sp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
