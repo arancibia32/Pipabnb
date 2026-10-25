@@ -1,5 +1,6 @@
 package com.example.pipabnb;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -45,6 +46,18 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Complete todos los campos", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(MainActivity.this, "Ingreso de prueba correcto", Toast.LENGTH_SHORT).show();
+
+                    /*
+
+                    Intent <nombreIntent> = new Intent(<ActivityActual>.this,<ActivityDestino>.class);
+                    startActivity(<nombreIntent>);
+
+
+
+                    Intent principal = new Intent(MainActivity.this, Destino.class);
+                    startActivity(principal);
+
+                     */
                 }
             }
         });
