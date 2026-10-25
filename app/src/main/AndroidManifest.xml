@@ -20,6 +20,7 @@ xmlns:tools="http://schemas.android.com/tools">
         android:name=".Pantalla_principal"
         android:exported="false" />
 
+
     <activity
         android:name=".MainActivity"
         android:exported="true"

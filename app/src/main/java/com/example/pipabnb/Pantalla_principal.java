@@ -1,7 +1,10 @@
 
 package com.example.pipabnb;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +13,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
@@ -20,6 +25,11 @@ public class Pantalla_principal extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
+
+
+
+
 
         ArrayList<Alojamiento> array_alojamiento = new ArrayList<>();
 
@@ -58,6 +68,24 @@ public class Pantalla_principal extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerAlojamientos);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new AlojamientoAdapter(array_alojamiento));
+
+        BottomNavigationView menu_inferior = findViewById(R.id.menuInferior);
+        menu_inferior.setOnItemSelectedListener(menuItem ->  {
+
+
+            int id = menuItem.getItemId();
+
+            if (id == R.id.nav_favoritos) {
+                Intent intent_fav = new Intent(Pantalla_principal.this,FavoritoAdapter.class);
+                startActivity(intent_fav);
+                return true;
+            }
+
+            return false;
+        });
+
+
+
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
