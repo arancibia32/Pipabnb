@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.content.Intent;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,6 +43,22 @@ public class AlojamientoAdapter extends RecyclerView.Adapter<AlojamientoAdapter.
         holder.imgAlojamiento.setImageResource(
                 R.drawable.ic_launcher_background
         );
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(
+                    v.getContext(),
+                    DetalleAlojamientoActivity.class
+            );
+
+            intent.putExtra("nombre", alojamiento.nombre);
+            intent.putExtra(
+                    "precio",
+                    "$" + (int) alojamiento.precio + "\npor noche"
+            );
+            intent.putExtra("descripcion", alojamiento.descripcion);
+            intent.putExtra("estrellas", alojamiento.estrellas);
+
+            v.getContext().startActivity(intent);
+        });
     }
 
     @Override
