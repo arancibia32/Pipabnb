@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 class Alojamiento {
     String nombre;
+    String destino;
     String descripcion;
 
     int estrellas;
@@ -13,8 +14,9 @@ class Alojamiento {
     String foto;
 
 
-    public Alojamiento(String nombre, String descripcion, int estrellas, boolean favorito, double precio, String foto) {
+    public Alojamiento(String nombre, String destino, String descripcion, int estrellas, boolean favorito, double precio, String foto) {
         this.nombre = nombre;
+        this.destino = destino;
         this.descripcion = descripcion;
         this.estrellas = estrellas;
         this.favorito = favorito;
