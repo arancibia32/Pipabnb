@@ -53,6 +53,15 @@ public class DetalleAlojamientoActivity extends AppCompatActivity {
 
                 if (esFavorito) {
                     btnFavorito.setText("♥");
+                    if (nombre != null && descripcion != null) {
+                        Favorito nuevoFavorito = new Favorito(
+                                nombre,
+                                descripcion,
+                                R.drawable.templo1
+                        );
+
+                        FavoritoActivity.agregarFavorito(nuevoFavorito);
+                    }
                     Toast.makeText(
                             DetalleAlojamientoActivity.this,
                             "Agregado a favoritos",
@@ -60,6 +69,9 @@ public class DetalleAlojamientoActivity extends AppCompatActivity {
                     ).show();
                 } else {
                     btnFavorito.setText("♡");
+                    if (nombre != null) {
+                        FavoritoActivity.quitarFavorito(nombre);
+                    }
                     Toast.makeText(
                             DetalleAlojamientoActivity.this,
                             "Eliminado de favoritos",
