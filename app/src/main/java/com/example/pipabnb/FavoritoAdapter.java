@@ -45,10 +45,12 @@ public class FavoritoAdapter extends RecyclerView.Adapter<FavoritoAdapter.Favori
                 lugar.isFavorito() ? "♥" : "♡");
 
         holder.btnFavorito.setOnClickListener(v -> {
-            lugar.setFavorito(!lugar.isFavorito());
+            int posicion = holder.getBindingAdapterPosition();
 
-            holder.btnFavorito.setText(
-                    lugar.isFavorito() ? "♥" : "♡");
+            if (posicion != RecyclerView.NO_POSITION) {
+                lista.remove(posicion);
+                notifyItemRemoved(posicion);
+            }
         });
 
         holder.btnDetalle.setOnClickListener(v ->
