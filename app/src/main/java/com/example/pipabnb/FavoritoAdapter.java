@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.Intent;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -52,7 +53,7 @@ public class FavoritoAdapter extends RecyclerView.Adapter<FavoritoAdapter.Favori
                 notifyItemRemoved(posicion);
             }
         });
-
+/*
         holder.btnDetalle.setOnClickListener(v ->
                 Toast.makeText(
                         v.getContext(),
@@ -60,6 +61,24 @@ public class FavoritoAdapter extends RecyclerView.Adapter<FavoritoAdapter.Favori
                         Toast.LENGTH_SHORT
                 ).show()
         );
+  */
+        View.OnClickListener abrirDetalle = v -> {
+            Intent intent = new Intent(
+                    v.getContext(),
+                    DetalleAlojamientoActivity.class
+            );
+
+            intent.putExtra("nombre", lugar.getNombre());
+            intent.putExtra("descripcion", lugar.getDescripcion());
+            intent.putExtra("precio", lugar.getPrecio());
+            intent.putExtra("estrellas", lugar.getEstrellas());
+            intent.putExtra("esFavorito", true);
+
+            v.getContext().startActivity(intent);
+        };
+
+        holder.itemView.setOnClickListener(abrirDetalle);
+        holder.btnDetalle.setOnClickListener(abrirDetalle);
     }
 
     @Override
