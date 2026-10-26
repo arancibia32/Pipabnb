@@ -40,8 +40,13 @@ public class MapaActivity extends AppCompatActivity {
 
         GeoPoint ubicacion = new GeoPoint(-29.9027, -71.2520);
 
-        map.getController().setZoom(13.0);
+        map.getController().setZoom(15.0);
         map.getController().setCenter(ubicacion);
+
+
+        map.setMinZoomLevel(4.0);
+        map.setMaxZoomLevel(19.0);
+        map.setTilesScaledToDpi(true);
 
         Marker marcador = new Marker(map);
         marcador.setPosition(ubicacion);
