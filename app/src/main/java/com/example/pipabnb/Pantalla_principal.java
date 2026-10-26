@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import androidx.activity.OnBackPressedCallback;
 
 import java.util.ArrayList;
 
@@ -90,7 +91,12 @@ public class Pantalla_principal extends AppCompatActivity {
             return false;
         });
 
-
+        getOnBackPressedDispatcher().addCallback(this,new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                finishAffinity();
+            }
+        });
 
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -99,4 +105,17 @@ public class Pantalla_principal extends AppCompatActivity {
             return insets;
         });
     }
+
+
+
+    protected void onResume() {
+        super.onResume();
+
+        BottomNavigationView menu_inferior = findViewById(R.id.menuInferior);
+        menu_inferior.getMenu().setGroupCheckable(0, true, false);
+        menu_inferior.getMenu().setGroupCheckable(0, false, false);
+    }
+
+
 }
+
