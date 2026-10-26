@@ -31,6 +31,10 @@ xmlns:tools="http://schemas.android.com/tools">
         android:windowSoftInputMode="adjustResize">
 
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="API KEY" />
+
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
