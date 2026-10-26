@@ -17,7 +17,21 @@ public class MapaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Configuration.getInstance().setUserAgentValue(getPackageName());
+        Configuration.getInstance().load(
+                getApplicationContext(),
+                getSharedPreferences("osmdroid", MODE_PRIVATE)
+        );
+
+        Configuration.getInstance().setUserAgentValue(
+                "Pipabnb/1.0 (com.example.pipabnb)"
+        );
+        Configuration.getInstance()
+                .getAdditionalHttpRequestProperties()
+                .put("User-Agent", "Pipabnb/1.0 (Android)");
+
+        Configuration.getInstance()
+                .getAdditionalHttpRequestProperties()
+                .put("X-Requested-With", getPackageName());
 
         setContentView(R.layout.mapa);
 
