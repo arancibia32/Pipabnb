@@ -26,6 +26,7 @@ public class DetalleAlojamientoActivity extends AppCompatActivity {
         String nombre = getIntent().getStringExtra("nombre");
         String precio = getIntent().getStringExtra("precio");
         String descripcion = getIntent().getStringExtra("descripcion");
+        int estrellas = getIntent().getIntExtra("estrellas", 0);
 
         if (nombre != null) {
             txtNombreAlojamiento.setText(nombre);
@@ -57,7 +58,9 @@ public class DetalleAlojamientoActivity extends AppCompatActivity {
                         Favorito nuevoFavorito = new Favorito(
                                 nombre,
                                 descripcion,
-                                R.drawable.templo1
+                                R.drawable.templo1,
+                                precio,
+                                estrellas
                         );
 
                         FavoritoActivity.agregarFavorito(nuevoFavorito);
