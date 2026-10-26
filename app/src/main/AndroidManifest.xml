@@ -13,6 +13,10 @@ xmlns:tools="http://schemas.android.com/tools">
     android:theme="@style/Theme.Pipabnb">
 
     <activity
+        android:name=".MapaActivity"
+        android:exported="false" />
+
+    <activity
         android:name=".FavoritoActivity"
         android:exported="false" />
 
@@ -32,8 +36,12 @@ xmlns:tools="http://schemas.android.com/tools">
 
 
         <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="API KEY" />
+            android:name="org.osmdroid.basePath"
+            android:value="osmdroid" />
+
+        <meta-data
+            android:name="org.osmdroid.cachePath"
+            android:value="tiles" />
 
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />

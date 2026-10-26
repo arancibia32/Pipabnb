@@ -81,6 +81,12 @@ public class Pantalla_principal extends AppCompatActivity {
                 return true;
             }
 
+            if (id == R.id.nav_mapa) {
+                Intent intent_map = new Intent(Pantalla_principal.this,MapaActivity.class);
+                startActivity(intent_map);
+                return true;
+            }
+
             return false;
         });
 
