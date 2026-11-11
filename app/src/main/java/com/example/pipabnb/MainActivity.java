@@ -2,6 +2,7 @@ package com.example.pipabnb;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,12 +16,15 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.login_activity); //PANTALLA LOGIN
@@ -70,7 +74,18 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+        // Obtener la instancia de la base de datos
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference connectionRef = database.getReference("conexion_prueba");
 
+        // Intentar escribir un mensaje de prueba
+        connectionRef.setValue("¡PipaBnB conectado con éxito!").addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Log.d("FirebaseTest", "¡Conexión establecida correctamente con Realtime Database!");
+            } else {
+                Log.e("FirebaseTest", "Error de conexión: ", task.getException());
+            }
+        });
 
 
     }

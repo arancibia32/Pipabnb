@@ -3,8 +3,6 @@ package com.example.pipabnb;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,25 +12,30 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pipabnb.models.Alojamiento;
+import com.example.pipabnb.models.AlojamientoDAO;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.activity.OnBackPressedCallback;
 
 import java.util.ArrayList;
 
+import android.util.Log;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+
 public class Pantalla_principal extends AppCompatActivity {
+    private AlojamientoDAO alojamientoDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-
-
-
-
-
-
+  /*
         ArrayList<Alojamiento> array_alojamiento = new ArrayList<>();
+
 
         Alojamiento alojamiento0 = new Alojamiento(
                 "Cabaña del bosque",
@@ -69,6 +72,55 @@ public class Pantalla_principal extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerAlojamientos);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new AlojamientoAdapter(array_alojamiento));
+        */
+
+        // Inicializar DAO
+        alojamientoDAO = new AlojamientoDAO();
+
+        /*
+        Alojamiento cabana1 = new Alojamiento(null, "Cabaña del bosque", "Cabaña para dos personas", 5, false, 35000, "cabaña.jpg");
+        Alojamiento cabana2 = new Alojamiento(null, "Cabaña junto al río", "Cabaña rodeada de naturaleza", 4, false, 40000, "cabana_rio.jpg");
+        Alojamiento cabana3 = new Alojamiento(null, "Casa de playa", "Casa para cuatro personas", 5, false, 55000, "casa_playa.jpg");
+
+        alojamientoDAO.guardarAlojamiento(cabana1);
+        alojamientoDAO.guardarAlojamiento(cabana2);
+        alojamientoDAO.guardarAlojamiento(cabana3);
+        */
+        // Lista que recibirá los datos de Firebase
+        ArrayList<Alojamiento> array_alojamiento = new ArrayList<>();
+
+        // Configurar RecyclerView
+        RecyclerView recyclerView = findViewById(R.id.recyclerAlojamientos);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        AlojamientoAdapter adapter = new AlojamientoAdapter(array_alojamiento);
+        recyclerView.setAdapter(adapter);
+
+        //Alojamientos desde firebase
+        alojamientoDAO.obtenerAlojamientos(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+
+                array_alojamiento.clear();
+
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+
+                    Alojamiento alojamiento = postSnapshot.getValue(Alojamiento.class);
+
+                    if (alojamiento != null) {
+                        array_alojamiento.add(alojamiento);
+                    }
+                }
+
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Log.e("Firebase", "Error al obtener alojamientos", error.toException());
+            }
+        });
 
         BottomNavigationView menu_inferior = findViewById(R.id.menuInferior);
         menu_inferior.setOnItemSelectedListener(menuItem ->  {

@@ -11,6 +11,8 @@ import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pipabnb.models.Alojamiento;
+
 import java.util.ArrayList;
 
 public class AlojamientoAdapter extends RecyclerView.Adapter<AlojamientoAdapter.AlojamientoViewHolder> {
@@ -35,10 +37,10 @@ public class AlojamientoAdapter extends RecyclerView.Adapter<AlojamientoAdapter.
     public void onBindViewHolder(@NonNull AlojamientoViewHolder holder, int position) {
         Alojamiento alojamiento = alojamientos.get(position);
 
-        holder.txtNombre.setText(alojamiento.nombre);
-        holder.txtDescripcion.setText(alojamiento.descripcion);
-        holder.txtEstrellas.setText(alojamiento.estrellas + " estrellas");
-        holder.txtPrecio.setText("$" + (int) alojamiento.precio + " por noche");
+        holder.txtNombre.setText(alojamiento.getNombre());
+        holder.txtDescripcion.setText(alojamiento.getDescripcion());
+        holder.txtEstrellas.setText(alojamiento.getEstrellas() + " estrellas");
+        holder.txtPrecio.setText("$" + (int) alojamiento.getPrecio() + " por noche");
 
         holder.imgAlojamiento.setImageResource(
                 R.drawable.ic_launcher_background
@@ -49,13 +51,13 @@ public class AlojamientoAdapter extends RecyclerView.Adapter<AlojamientoAdapter.
                     DetalleAlojamientoActivity.class
             );
 
-            intent.putExtra("nombre", alojamiento.nombre);
+            intent.putExtra("nombre", alojamiento.getNombre());
             intent.putExtra(
                     "precio",
-                    "$" + (int) alojamiento.precio + "\npor noche"
+                    "$" + (int) alojamiento.getPrecio() + "\npor noche"
             );
-            intent.putExtra("descripcion", alojamiento.descripcion);
-            intent.putExtra("estrellas", alojamiento.estrellas);
+            intent.putExtra("descripcion", alojamiento.getDescripcion());
+            intent.putExtra("estrellas", alojamiento.getEstrellas());
 
             v.getContext().startActivity(intent);
         });
