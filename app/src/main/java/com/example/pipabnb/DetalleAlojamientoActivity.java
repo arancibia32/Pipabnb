@@ -7,26 +7,35 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.pipabnb.models.AlojamientoDAO;
+
 public class DetalleAlojamientoActivity extends AppCompatActivity {
 
     private boolean esFavorito = false;
+    private String id;
+    private AlojamientoDAO alojamientoDAO; // 1. Declaramos el DAO
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detalle_alojamiento);
 
+        // 2. Inicializamos el DAO
+        alojamientoDAO = new AlojamientoDAO();
+
         TextView btnVolver = findViewById(R.id.btnVolver);
         TextView btnFavorito = findViewById(R.id.btnFavorito);
-        TextView txtNombreAlojamiento =
-                findViewById(R.id.txtNombreAlojamiento);
+        TextView txtNombreAlojamiento = findViewById(R.id.txtNombreAlojamiento);
         TextView txtPrecio = findViewById(R.id.txtPrecio);
         TextView txtDescripcion = findViewById(R.id.txtDescripcion);
+
+        // 3. Recuperamos los datos del Intent (incluyendo el ID de Firebase y el estado) [1.1.1]
+        id = getIntent().getStringExtra("id");
+        esFavorito = getIntent().getBooleanExtra("favorito", false);
 
         String nombre = getIntent().getStringExtra("nombre");
         String precio = getIntent().getStringExtra("precio");
         String descripcion = getIntent().getStringExtra("descripcion");
-        int estrellas = getIntent().getIntExtra("estrellas", 0);
 
         if (nombre != null) {
             txtNombreAlojamiento.setText(nombre);
@@ -40,6 +49,9 @@ public class DetalleAlojamientoActivity extends AppCompatActivity {
             txtDescripcion.setText(descripcion);
         }
 
+        // 4. Pintamos el estado inicial del corazón según Firebase [1.1.1]
+        btnFavorito.setText(esFavorito ? "♥" : "♡");
+
         btnVolver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,31 +62,22 @@ public class DetalleAlojamientoActivity extends AppCompatActivity {
         btnFavorito.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Invertimos el estado de la variable
                 esFavorito = !esFavorito;
 
-                if (esFavorito) {
-                    btnFavorito.setText("♥");
-                    if (nombre != null && descripcion != null) {
-                        Favorito nuevoFavorito = new Favorito(
-                                nombre,
-                                descripcion,
-                                R.drawable.templo1,
-                                precio,
-                                estrellas
-                        );
+                // Actualizamos visualmente el botón
+                btnFavorito.setText(esFavorito ? "♥" : "♡");
 
-                        FavoritoActivity.agregarFavorito(nuevoFavorito);
-                    }
+                // 5. Guardamos la actualización de forma automática en Firebase [1.1.1]
+                alojamientoDAO.cambiarFavorito(id, esFavorito);
+
+                if (esFavorito) {
                     Toast.makeText(
                             DetalleAlojamientoActivity.this,
                             "Agregado a favoritos",
                             Toast.LENGTH_SHORT
                     ).show();
                 } else {
-                    btnFavorito.setText("♡");
-                    if (nombre != null) {
-                        FavoritoActivity.quitarFavorito(nombre);
-                    }
                     Toast.makeText(
                             DetalleAlojamientoActivity.this,
                             "Eliminado de favoritos",

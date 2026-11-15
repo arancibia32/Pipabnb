@@ -1,6 +1,5 @@
 package com.example.pipabnb.models;
 
-import com.example.pipabnb.models.Alojamiento;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
@@ -9,40 +8,42 @@ public class AlojamientoDAO {
     private DatabaseReference dbRef;
 
     public AlojamientoDAO() {
+        // Conexión al nodo "alojamientos" en tu Realtime Database [1.1.1]
         dbRef = FirebaseDatabase.getInstance().getReference("alojamientos");
     }
 
-    public void obtenerAlojamientos(ValueEventListener listener) {
-        dbRef.addValueEventListener(listener);
-    }
-
-    // NUEVO MÉTODO: Guarda un alojamiento en Firebase
+    // 1. CREATE (Crear nuevo alojamiento)
     public void guardarAlojamiento(Alojamiento alojamiento) {
-        // ID UNICO
         String idUnico = dbRef.push().getKey();
-        alojamiento.setId(idUnico); // Le asigna el ID autogenerado al modelo
-
+        alojamiento.setId(idUnico);
         if (idUnico != null) {
             dbRef.child(idUnico).setValue(alojamiento);
         }
     }
 
+    // 2. READ (Leer todos los alojamientos en tiempo real)
+    public void obtenerAlojamientos(ValueEventListener listener) {
+        dbRef.addValueEventListener(listener);
+    }
 
-
-    //UPDATE
+    // 3. UPDATE COMPLETO (Actualizar todos los campos de un alojamiento)
     public void actualizarAlojamiento(Alojamiento alojamiento) {
         if (alojamiento.getId() != null) {
-            // Al pasar un modelo con un ID que ya existe, Firebase sobrescribe la información anterior [1.1.1]
             dbRef.child(alojamiento.getId()).setValue(alojamiento);
         }
     }
 
-    //DELETE
-    public void eliminarAlojamiento(String id) {
+    // 4. UPDATE PARCIAL (Cambiar únicamente el estado de favorito de un ID) [1.1.1]
+    public void cambiarFavorito(String id, boolean esFavorito) {
         if (id != null) {
-            // removeValue() remueve por completo el nodo en la base de datos [1.1.1]
-            dbRef.child(id).removeValue();
+            dbRef.child(id).child("favorito").setValue(esFavorito);
         }
     }
 
+    // 5. DELETE (Eliminar un alojamiento de Firebase)
+    public void eliminarAlojamiento(String id) {
+        if (id != null) {
+            dbRef.child(id).removeValue();
+        }
+    }
 }

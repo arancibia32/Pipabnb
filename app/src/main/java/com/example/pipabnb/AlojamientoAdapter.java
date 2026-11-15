@@ -51,6 +51,11 @@ public class AlojamientoAdapter extends RecyclerView.Adapter<AlojamientoAdapter.
                     DetalleAlojamientoActivity.class
             );
 
+            // ¡ESTAS DOS LÍNEAS SON VITALES PARA QUE EL DETALLE ACTUALICE EN FIREBASE! [1.1.1]
+            intent.putExtra("id", alojamiento.getId());
+            intent.putExtra("favorito", alojamiento.isFavorito());
+
+            // El resto de los datos que ya tenías (usando getters para evitar errores privados) [1.2.4]
             intent.putExtra("nombre", alojamiento.getNombre());
             intent.putExtra(
                     "precio",
@@ -61,6 +66,7 @@ public class AlojamientoAdapter extends RecyclerView.Adapter<AlojamientoAdapter.
 
             v.getContext().startActivity(intent);
         });
+
     }
 
     @Override
