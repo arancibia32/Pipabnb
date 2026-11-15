@@ -183,18 +183,11 @@
                 android:textColor="#2196F3"/>
 
             <TextView
+                android:id="@+id/txtServiciosDetalle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Wifi  •  Estacionamiento  •  Piscina  •  Terraza"
-                android:textSize="13sp"
-                android:textColor="#555555"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Cocina  •  Lavadora  •  TV de pantalla plana"
+                android:text="Cargando servicios..."
                 android:textSize="13sp"
                 android:textColor="#555555"/>
 

@@ -45,27 +45,25 @@ public class AlojamientoAdapter extends RecyclerView.Adapter<AlojamientoAdapter.
         holder.imgAlojamiento.setImageResource(
                 R.drawable.ic_launcher_background
         );
+
         holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(
-                    v.getContext(),
-                    DetalleAlojamientoActivity.class
-            );
-
-            // ¡ESTAS DOS LÍNEAS SON VITALES PARA QUE EL DETALLE ACTUALICE EN FIREBASE! [1.1.1]
-            intent.putExtra("id", alojamiento.getId());
-            intent.putExtra("favorito", alojamiento.isFavorito());
-
-            // El resto de los datos que ya tenías (usando getters para evitar errores privados) [1.2.4]
-            intent.putExtra("nombre", alojamiento.getNombre());
-            intent.putExtra(
-                    "precio",
-                    "$" + (int) alojamiento.getPrecio() + "\npor noche"
-            );
-            intent.putExtra("descripcion", alojamiento.getDescripcion());
-            intent.putExtra("estrellas", alojamiento.getEstrellas());
-
-            v.getContext().startActivity(intent);
+            if (v.getContext() instanceof GestionAlojamientoActivity) {
+                // 1. Si estamos en la gestión, auto-rellenamos el formulario de esa pantalla [1.1.1]
+                ((GestionAlojamientoActivity) v.getContext()).cargarDatosAlojamiento(alojamiento);
+            } else {
+                // 2. Si estamos en otra pantalla, abrimos el detalle normal [1.1.1]
+                Intent intent = new Intent(v.getContext(), DetalleAlojamientoActivity.class);
+                intent.putExtra("id", alojamiento.getId());
+                intent.putExtra("favorito", alojamiento.isFavorito());
+                intent.putExtra("nombre", alojamiento.getNombre());
+                intent.putExtra("precio", "$" + (int) alojamiento.getPrecio() + "\npor noche");
+                intent.putExtra("descripcion", alojamiento.getDescripcion());
+                intent.putExtra("estrellas", alojamiento.getEstrellas());
+                intent.putStringArrayListExtra("servicios", alojamiento.getServicios());
+                v.getContext().startActivity(intent);
+            }
         });
+
 
     }
 

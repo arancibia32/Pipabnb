@@ -44,34 +44,32 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Evento del botón Ingresar
+// Dentro del evento btnIngresar.setOnClickListener en tu MainActivity:
         btnIngresar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                String correo = input_nombre.getText().toString();
+                String correo = input_nombre.getText().toString().trim();
                 String contrasena = input_contrasena.getText().toString();
 
-                if (correo.trim().isEmpty() || contrasena.isEmpty()) {
+                if (correo.isEmpty() || contrasena.isEmpty()) {
                     Toast.makeText(MainActivity.this, "Complete todos los campos", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(MainActivity.this, "Ingreso de prueba correcto", Toast.LENGTH_SHORT).show();
-
-                    Intent principal = new Intent(MainActivity.this, Pantalla_principal.class);
-                    startActivity(principal);
-
-                    /*
-
-                    Intent <nombreIntent> = new Intent(<ActivityActual>.this,<ActivityDestino>.class);
-                    startActivity(<nombreIntent>);
-
-
-
-
-
-                     */
+                    // SIMULACIÓN DE ROLES:
+                    if (correo.equals("admin@pipabnb.com") && contrasena.equals("admin123")) {
+                        // Si inicia sesión como administrador, lo dirigimos a la pantalla de gestión del CRUD [1.1.1, 1.1.2]
+                        Toast.makeText(MainActivity.this, "Sesión iniciada como Administrador", Toast.LENGTH_SHORT).show();
+                        Intent adminIntent = new Intent(MainActivity.this, GestionAlojamientoActivity.class);
+                        startActivity(adminIntent);
+                    } else {
+                        // Si inicia sesión cualquier otro usuario, va al flujo normal de huéspedes [1.1.1, 1.1.2]
+                        Toast.makeText(MainActivity.this, "Sesión iniciada como Huésped", Toast.LENGTH_SHORT).show();
+                        Intent principalIntent = new Intent(MainActivity.this, Pantalla_principal.class);
+                        startActivity(principalIntent);
+                    }
                 }
             }
         });
+
 
 
         // Obtener la instancia de la base de datos
