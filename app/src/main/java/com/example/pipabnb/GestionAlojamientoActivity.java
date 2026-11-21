@@ -90,10 +90,7 @@ public class GestionAlojamientoActivity extends AppCompatActivity {
             String estrellasStr = inputEstrellas.getText().toString().trim();
             String foto = inputFoto.getText().toString().trim();
 
-            if (nombre.isEmpty() || desc.isEmpty() || precioStr.isEmpty() || estrellasStr.isEmpty() || foto.isEmpty()) {
-                Toast.makeText(this, "Complete todos los campos", Toast.LENGTH_SHORT).show();
-                return;
-            }
+            if (!validarFormulario(nombre, desc, precioStr, estrellasStr)) return;
 
             Alojamiento nuevo = new Alojamiento(null, nombre, desc, Integer.parseInt(estrellasStr), false, Double.parseDouble(precioStr), foto);
             nuevo.setServicios(convertirTextoALista(inputServicios.getText().toString()));
@@ -112,8 +109,9 @@ public class GestionAlojamientoActivity extends AppCompatActivity {
             String estrellasStr = inputEstrellas.getText().toString().trim();
             String foto = inputFoto.getText().toString().trim();
 
-            if (id.isEmpty()) {
-                Toast.makeText(this, "Ingrese el ID para modificar", Toast.LENGTH_SHORT).show();
+            if (id.isEmpty() || !validarFormulario(nombre, desc, precioStr, estrellasStr)) {
+                if (id.isEmpty()) Toast.makeText(this,
+                        "Seleccione un alojamiento de la lista", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -183,5 +181,30 @@ public class GestionAlojamientoActivity extends AppCompatActivity {
         inputEstrellas.setText("");
         inputFoto.setText("");
         inputServicios.setText("");
+    }
+
+    private boolean validarFormulario(String nombre, String descripcion,
+                                      String precioTexto, String estrellasTexto) {
+        if (nombre.isEmpty() || descripcion.isEmpty() ||
+                precioTexto.isEmpty() || estrellasTexto.isEmpty()) {
+            Toast.makeText(this, "Complete los campos obligatorios", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        try {
+            double precio = Double.parseDouble(precioTexto);
+            int estrellas = Integer.parseInt(estrellasTexto);
+            if (precio <= 0) {
+                inputPrecio.setError("El precio debe ser mayor que cero");
+                return false;
+            }
+            if (estrellas < 1 || estrellas > 5) {
+                inputEstrellas.setError("Ingrese un valor entre 1 y 5");
+                return false;
+            }
+        } catch (NumberFormatException error) {
+            Toast.makeText(this, "Revise el precio y las estrellas", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 }

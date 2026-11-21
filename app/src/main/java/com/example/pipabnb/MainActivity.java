@@ -54,6 +54,10 @@ public class MainActivity extends AppCompatActivity {
                 if (correo.isEmpty() || contrasena.isEmpty()) {
                     Toast.makeText(MainActivity.this, "Complete todos los campos", Toast.LENGTH_SHORT).show();
                 } else {
+                    String nombreUsuario = correo.contains("@")
+                            ? correo.substring(0, correo.indexOf("@")) : correo;
+                    getSharedPreferences("usuario", MODE_PRIVATE).edit()
+                            .putString("nombre", nombreUsuario).apply();
                     // SIMULACIÓN DE ROLES:
                     if (correo.equals("admin@pipabnb.com") && contrasena.equals("admin123")) {
                         // Si inicia sesión como administrador, lo dirigimos a la pantalla de gestión del CRUD [1.1.1, 1.1.2]

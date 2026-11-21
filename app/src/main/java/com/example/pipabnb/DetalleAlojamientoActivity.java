@@ -1,28 +1,46 @@
 package com.example.pipabnb;
 
 import android.os.Bundle;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.pipabnb.data.LocalDatabaseHelper;
 import com.example.pipabnb.models.AlojamientoDAO;
+import com.example.pipabnb.models.Comentario;
+import com.example.pipabnb.models.ComentarioDAO;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class DetalleAlojamientoActivity extends AppCompatActivity {
 
     private boolean esFavorito = false;
     private String id;
-    private AlojamientoDAO alojamientoDAO; // 1. Declaramos el DAO
+    private LocalDatabaseHelper localDatabase;
+    private ComentarioDAO comentarioDAO;
+    private AlojamientoDAO alojamientoDAO;
+    private LinearLayout contenedorComentarios;
+    private TextView txtPromedioCalificacion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detalle_alojamiento);
 
-        // 2. Inicializamos el DAO
+        localDatabase = new LocalDatabaseHelper(this);
+        comentarioDAO = new ComentarioDAO();
         alojamientoDAO = new AlojamientoDAO();
 
         TextView btnVolver = findViewById(R.id.btnVolver);
@@ -31,10 +49,15 @@ public class DetalleAlojamientoActivity extends AppCompatActivity {
         TextView txtPrecio = findViewById(R.id.txtPrecio);
         TextView txtDescripcion = findViewById(R.id.txtDescripcion);
         TextView txtServiciosDetalle = findViewById(R.id.txtServiciosDetalle);
+        txtPromedioCalificacion = findViewById(R.id.txtPromedioCalificacion);
+        contenedorComentarios = findViewById(R.id.contenedorComentarios);
+        RatingBar ratingComentario = findViewById(R.id.ratingComentario);
+        EditText inputComentario = findViewById(R.id.inputComentario);
+        Button btnPublicarComentario = findViewById(R.id.btnPublicarComentario);
 
         // 3. Recuperamos los datos del Intent (incluyendo el ID de Firebase y el estado) [1.1.1]
         id = getIntent().getStringExtra("id");
-        esFavorito = getIntent().getBooleanExtra("favorito", false);
+        esFavorito = localDatabase.isFavorite(id);
 
         String nombre = getIntent().getStringExtra("nombre");
         String precio = getIntent().getStringExtra("precio");
@@ -78,8 +101,7 @@ public class DetalleAlojamientoActivity extends AppCompatActivity {
                 // Actualizamos visualmente el botón
                 btnFavorito.setText(esFavorito ? "♥" : "♡");
 
-                // 5. Guardamos la actualización de forma automática en Firebase [1.1.1]
-                alojamientoDAO.cambiarFavorito(id, esFavorito);
+                localDatabase.setFavorite(id, esFavorito);
 
                 if (esFavorito) {
                     Toast.makeText(
@@ -96,5 +118,99 @@ public class DetalleAlojamientoActivity extends AppCompatActivity {
                 }
             }
         });
+
+        if (id == null || id.trim().isEmpty()) {
+            btnPublicarComentario.setEnabled(false);
+            Toast.makeText(this, "No se pudo identificar el alojamiento", Toast.LENGTH_SHORT).show();
+        } else {
+            escucharComentarios();
+        }
+
+        btnPublicarComentario.setOnClickListener(v -> {
+            String texto = inputComentario.getText().toString().trim();
+            int calificacion = Math.round(ratingComentario.getRating());
+            if (texto.isEmpty()) {
+                inputComentario.setError("Escribe un comentario");
+                return;
+            }
+            if (calificacion < 1) {
+                Toast.makeText(this, "Selecciona una calificación", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            String autor = getSharedPreferences("usuario", MODE_PRIVATE)
+                    .getString("nombre", "Huesped");
+            Comentario comentario = new Comentario(null, autor, texto,
+                    calificacion, System.currentTimeMillis());
+            btnPublicarComentario.setEnabled(false);
+            comentarioDAO.guardar(id, comentario).addOnCompleteListener(task -> {
+                btnPublicarComentario.setEnabled(true);
+                if (task.isSuccessful()) {
+                    inputComentario.setText("");
+                    ratingComentario.setRating(5);
+                    Toast.makeText(this, "Comentario publicado", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "No se pudo publicar el comentario", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
+    }
+
+    private void escucharComentarios() {
+        comentarioDAO.escuchar(id, new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                contenedorComentarios.removeAllViews();
+                int cantidad = 0;
+                int suma = 0;
+                for (DataSnapshot child : snapshot.getChildren()) {
+                    Comentario comentario = child.getValue(Comentario.class);
+                    if (comentario != null) {
+                        cantidad++;
+                        suma += comentario.getCalificacion();
+                        agregarComentario(comentario);
+                    }
+                }
+
+                if (cantidad == 0) {
+                    txtPromedioCalificacion.setText("Sin opiniones todavía");
+                } else {
+                    double promedio = (double) suma / cantidad;
+                    txtPromedioCalificacion.setText(String.format(Locale.getDefault(),
+                            "%.1f ★  (%d opiniones)", promedio, cantidad));
+                    alojamientoDAO.actualizarCalificacion(id, promedio, cantidad);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Toast.makeText(DetalleAlojamientoActivity.this,
+                        "No se pudieron cargar los comentarios", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void agregarComentario(Comentario comentario) {
+        TextView vista = new TextView(this);
+        String estrellas = new String(new char[comentario.getCalificacion()]).replace("\0", "★");
+        vista.setText(comentario.getAutor() + "  " + estrellas + "\n" + comentario.getTexto());
+        vista.setTextColor(Color.parseColor("#444444"));
+        vista.setTextSize(14);
+        vista.setPadding(dp(12), dp(10), dp(12), dp(10));
+
+        GradientDrawable fondo = new GradientDrawable();
+        fondo.setColor(Color.WHITE);
+        fondo.setCornerRadius(dp(8));
+        vista.setBackground(fondo);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.bottomMargin = dp(8);
+        vista.setLayoutParams(params);
+        contenedorComentarios.addView(vista);
+    }
+
+    private int dp(int value) {
+        return Math.round(value * getResources().getDisplayMetrics().density);
     }
 }

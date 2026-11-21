@@ -12,6 +12,8 @@ public class Alojamiento {
     private String foto;
     private ArrayList<String> fotos;
     private ArrayList<String> servicios;
+    private double promedioCalificacion;
+    private int cantidadOpiniones;
 
     // 1. Constructor vacío obligatorio para la lectura en Firebase [1.2.4]
     public Alojamiento() {
@@ -59,4 +61,8 @@ public class Alojamiento {
 
     public ArrayList<String> getServicios() { return servicios; }
     public void setServicios(ArrayList<String> servicios) { this.servicios = servicios; }
+    public double getPromedioCalificacion() { return promedioCalificacion; }
+    public void setPromedioCalificacion(double promedioCalificacion) { this.promedioCalificacion = promedioCalificacion; }
+    public int getCantidadOpiniones() { return cantidadOpiniones; }
+    public void setCantidadOpiniones(int cantidadOpiniones) { this.cantidadOpiniones = cantidadOpiniones; }
 }

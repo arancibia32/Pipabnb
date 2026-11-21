@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pipabnb.models.Alojamiento;
 import com.example.pipabnb.models.AlojamientoDAO;
+import com.example.pipabnb.data.LocalDatabaseHelper;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -21,6 +22,7 @@ public class FavoritoActivity extends AppCompatActivity {
     private AlojamientoDAO alojamientoDAO;
     private ArrayList<Alojamiento> listaFavoritos;
     private AlojamientoAdapter adapter;
+    private LocalDatabaseHelper localDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,7 @@ public class FavoritoActivity extends AppCompatActivity {
         // 1. Inicializamos la lista de datos vacía y el DAO
         listaFavoritos = new ArrayList<>();
         alojamientoDAO = new AlojamientoDAO();
+        localDatabase = new LocalDatabaseHelper(this);
 
         // 2. Reutilizamos el AlojamientoAdapter con la lista de favoritos vacía
         adapter = new AlojamientoAdapter(listaFavoritos);
@@ -49,7 +52,7 @@ public class FavoritoActivity extends AppCompatActivity {
                     Alojamiento alojamiento = postSnapshot.getValue(Alojamiento.class);
 
                     // FILTRADO: Si el alojamiento está marcado como favorito, lo agregamos [1.1.1]
-                    if (alojamiento != null && alojamiento.isFavorito()) {
+                    if (alojamiento != null && localDatabase.isFavorite(alojamiento.getId())) {
                         listaFavoritos.add(alojamiento);
                     }
                 }
@@ -61,5 +64,15 @@ public class FavoritoActivity extends AppCompatActivity {
                 Log.e("FirebaseTest", "Error al cargar favoritos", error.toException());
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (localDatabase != null && listaFavoritos != null) {
+            listaFavoritos.removeIf(alojamiento ->
+                    !localDatabase.isFavorite(alojamiento.getId()));
+            adapter.notifyDataSetChanged();
+        }
     }
 }

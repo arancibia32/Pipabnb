@@ -3,6 +3,8 @@ package com.example.pipabnb.models;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AlojamientoDAO {
     private DatabaseReference dbRef;
@@ -29,7 +31,14 @@ public class AlojamientoDAO {
     // 3. UPDATE COMPLETO (Actualizar todos los campos de un alojamiento)
     public void actualizarAlojamiento(Alojamiento alojamiento) {
         if (alojamiento.getId() != null) {
-            dbRef.child(alojamiento.getId()).setValue(alojamiento);
+            Map<String, Object> valores = new HashMap<>();
+            valores.put("nombre", alojamiento.getNombre());
+            valores.put("descripcion", alojamiento.getDescripcion());
+            valores.put("estrellas", alojamiento.getEstrellas());
+            valores.put("precio", alojamiento.getPrecio());
+            valores.put("foto", alojamiento.getFoto());
+            valores.put("servicios", alojamiento.getServicios());
+            dbRef.child(alojamiento.getId()).updateChildren(valores);
         }
     }
 
@@ -45,5 +54,13 @@ public class AlojamientoDAO {
         if (id != null) {
             dbRef.child(id).removeValue();
         }
+    }
+
+    public void actualizarCalificacion(String id, double promedio, int cantidad) {
+        if (id == null) return;
+        Map<String, Object> valores = new HashMap<>();
+        valores.put("promedioCalificacion", promedio);
+        valores.put("cantidadOpiniones", cantidad);
+        dbRef.child(id).updateChildren(valores);
     }
 }

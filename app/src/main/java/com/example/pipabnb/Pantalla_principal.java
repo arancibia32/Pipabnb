@@ -1,10 +1,17 @@
-
 package com.example.pipabnb;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -12,144 +19,59 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pipabnb.data.LocalDatabaseHelper;
 import com.example.pipabnb.models.Alojamiento;
 import com.example.pipabnb.models.AlojamientoDAO;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import androidx.activity.OnBackPressedCallback;
-
-import java.util.ArrayList;
-
-import android.util.Log;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.Normalizer;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
 public class Pantalla_principal extends AppCompatActivity {
-    private AlojamientoDAO alojamientoDAO;
+    private final ArrayList<Alojamiento> todosLosAlojamientos = new ArrayList<>();
+    private final ArrayList<Alojamiento> alojamientosVisibles = new ArrayList<>();
+    private AlojamientoAdapter adapter;
+    private LocalDatabaseHelper localDatabase;
+    private EditText inputDestino;
+    private TextView tituloResultados;
+    private TextView txtSinResultados;
+    private Button reciente1;
+    private Button reciente2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-  /*
-        ArrayList<Alojamiento> array_alojamiento = new ArrayList<>();
 
-
-        Alojamiento alojamiento0 = new Alojamiento(
-                "Cabaña del bosque",
-                "Cabaña para dos personas",
-                5,
-                false,
-                35000,
-                "cabaña.jpg"
-        );
-
-        Alojamiento alojamiento1 = new Alojamiento(
-                "Cabaña junto al río",
-                "Cabaña rodeada de naturaleza",
-                4,
-                false,
-                40000,
-                "cabana_rio.jpg"
-        );
-
-        Alojamiento alojamiento2 = new Alojamiento(
-                "Casa de playa",
-                "Casa para cuatro personas",
-                5,
-                false,
-                55000,
-                "casa_playa.jpg"
-        );
-
-        array_alojamiento.add(alojamiento0);
-        array_alojamiento.add(alojamiento1);
-        array_alojamiento.add(alojamiento2);
-
+        localDatabase = new LocalDatabaseHelper(this);
+        inputDestino = findViewById(R.id.input_destino);
+        tituloResultados = findViewById(R.id.tituloResultados);
+        txtSinResultados = findViewById(R.id.txtSinResultados);
+        reciente1 = findViewById(R.id.reciente1);
+        reciente2 = findViewById(R.id.reciente2);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerAlojamientos);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new AlojamientoAdapter(array_alojamiento));
-        */
-
-        // Inicializar DAO
-        alojamientoDAO = new AlojamientoDAO();
-
-        /*
-        Alojamiento cabana1 = new Alojamiento(null, "Cabaña del bosque", "Cabaña para dos personas", 5, false, 35000, "cabaña.jpg");
-        Alojamiento cabana2 = new Alojamiento(null, "Cabaña junto al río", "Cabaña rodeada de naturaleza", 4, false, 40000, "cabana_rio.jpg");
-        Alojamiento cabana3 = new Alojamiento(null, "Casa de playa", "Casa para cuatro personas", 5, false, 55000, "casa_playa.jpg");
-
-        alojamientoDAO.guardarAlojamiento(cabana1);
-        alojamientoDAO.guardarAlojamiento(cabana2);
-        alojamientoDAO.guardarAlojamiento(cabana3);
-        */
-        // Lista que recibirá los datos de Firebase
-        ArrayList<Alojamiento> array_alojamiento = new ArrayList<>();
-
-        // Configurar RecyclerView
-        RecyclerView recyclerView = findViewById(R.id.recyclerAlojamientos);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        AlojamientoAdapter adapter = new AlojamientoAdapter(array_alojamiento);
+        adapter = new AlojamientoAdapter(alojamientosVisibles);
         recyclerView.setAdapter(adapter);
 
-        //Alojamientos desde firebase
-        alojamientoDAO.obtenerAlojamientos(new ValueEventListener() {
+        configurarBusqueda();
+        cargarBusquedasRecientes();
+        escucharAlojamientos();
+        configurarNavegacion();
 
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-
-                array_alojamiento.clear();
-
-                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-
-                    Alojamiento alojamiento = postSnapshot.getValue(Alojamiento.class);
-
-                    if (alojamiento != null) {
-                        array_alojamiento.add(alojamiento);
-                    }
-                }
-
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                Log.e("Firebase", "Error al obtener alojamientos", error.toException());
-            }
-        });
-
-        BottomNavigationView menu_inferior = findViewById(R.id.menuInferior);
-        menu_inferior.setOnItemSelectedListener(menuItem ->  {
-
-
-            int id = menuItem.getItemId();
-
-            if (id == R.id.nav_favoritos) {
-                Intent intent_fav = new Intent(Pantalla_principal.this,FavoritoActivity.class);
-                startActivity(intent_fav);
-                return true;
-            }
-
-            if (id == R.id.nav_mapa) {
-                Intent intent_map = new Intent(Pantalla_principal.this,MapaActivity.class);
-                startActivity(intent_map);
-                return true;
-            }
-
-            return false;
-        });
-
-        getOnBackPressedDispatcher().addCallback(this,new OnBackPressedCallback(true) {
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
                 finishAffinity();
             }
         });
-
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -158,16 +80,130 @@ public class Pantalla_principal extends AppCompatActivity {
         });
     }
 
+    private void configurarBusqueda() {
+        findViewById(R.id.btnBuscar).setOnClickListener(v -> buscar(inputDestino.getText().toString()));
+        inputDestino.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                buscar(inputDestino.getText().toString());
+                return true;
+            }
+            return false;
+        });
 
-
-    protected void onResume() {
-        super.onResume();
-
-        BottomNavigationView menu_inferior = findViewById(R.id.menuInferior);
-        menu_inferior.getMenu().setGroupCheckable(0, true, false);
-        menu_inferior.getMenu().setGroupCheckable(0, false, false);
+        View.OnClickListener buscarReciente = v -> {
+            String texto = ((Button) v).getText().toString();
+            inputDestino.setText(texto);
+            inputDestino.setSelection(texto.length());
+            buscar(texto);
+        };
+        reciente1.setOnClickListener(buscarReciente);
+        reciente2.setOnClickListener(buscarReciente);
     }
 
+    private void escucharAlojamientos() {
+        new AlojamientoDAO().obtenerAlojamientos(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                todosLosAlojamientos.clear();
+                for (DataSnapshot child : snapshot.getChildren()) {
+                    Alojamiento alojamiento = child.getValue(Alojamiento.class);
+                    if (alojamiento != null) todosLosAlojamientos.add(alojamiento);
+                }
+                aplicarFiltro(inputDestino.getText().toString());
+            }
 
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Log.e("Firebase", "Error al obtener alojamientos", error.toException());
+                Toast.makeText(Pantalla_principal.this,
+                        "No se pudieron cargar los alojamientos", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void buscar(String texto) {
+        String busqueda = texto == null ? "" : texto.trim();
+        if (!busqueda.isEmpty()) {
+            localDatabase.saveRecentSearch(busqueda);
+            cargarBusquedasRecientes();
+        }
+        aplicarFiltro(busqueda);
+    }
+
+    private void aplicarFiltro(String texto) {
+        String filtro = normalizar(texto);
+        alojamientosVisibles.clear();
+        for (Alojamiento alojamiento : todosLosAlojamientos) {
+            if (filtro.isEmpty() || coincide(alojamiento, filtro)) {
+                alojamientosVisibles.add(alojamiento);
+            }
+        }
+
+        adapter.notifyDataSetChanged();
+        txtSinResultados.setVisibility(alojamientosVisibles.isEmpty() ? View.VISIBLE : View.GONE);
+        tituloResultados.setText(filtro.isEmpty() ? "Alojamientos disponibles" :
+                "Resultados (" + alojamientosVisibles.size() + ")");
+    }
+
+    private boolean coincide(Alojamiento alojamiento, String filtro) {
+        if (normalizar(alojamiento.getNombre()).contains(filtro) ||
+                normalizar(alojamiento.getDescripcion()).contains(filtro)) return true;
+        if (alojamiento.getServicios() != null) {
+            for (String servicio : alojamiento.getServicios()) {
+                if (normalizar(servicio).contains(filtro)) return true;
+            }
+        }
+        return false;
+    }
+
+    private String normalizar(String texto) {
+        if (texto == null) return "";
+        String sinTildes = Normalizer.normalize(texto, Normalizer.Form.NFD)
+                .replaceAll("\\p{M}", "");
+        return sinTildes.toLowerCase(Locale.ROOT).trim();
+    }
+
+    private void cargarBusquedasRecientes() {
+        List<String> recientes = localDatabase.getRecentSearches(2);
+        configurarBotonReciente(reciente1, recientes, 0);
+        configurarBotonReciente(reciente2, recientes, 1);
+    }
+
+    private void configurarBotonReciente(Button boton, List<String> recientes, int posicion) {
+        if (posicion < recientes.size()) {
+            boton.setText(recientes.get(posicion));
+            boton.setVisibility(View.VISIBLE);
+        } else {
+            boton.setVisibility(View.GONE);
+        }
+    }
+
+    private void configurarNavegacion() {
+        BottomNavigationView menuInferior = findViewById(R.id.menuInferior);
+        menuInferior.setSelectedItemId(R.id.nav_buscar);
+        menuInferior.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.nav_buscar) return true;
+            if (id == R.id.nav_favoritos) {
+                startActivity(new Intent(this, FavoritoActivity.class));
+                return true;
+            }
+            if (id == R.id.nav_mapa) {
+                startActivity(new Intent(this, MapaActivity.class));
+                return true;
+            }
+            if (id == R.id.nav_perfil) {
+                Toast.makeText(this, "Perfil disponible próximamente", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            return false;
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ((BottomNavigationView) findViewById(R.id.menuInferior))
+                .setSelectedItemId(R.id.nav_buscar);
+    }
 }
-

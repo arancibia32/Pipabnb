@@ -193,39 +193,48 @@
 
             <!-- COMENTARIOS -->
             <TextView
+                android:id="@+id/txtPromedioCalificacion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
-                android:text="Comentarios"
+                android:text="Sin opiniones todavía"
                 android:textSize="17sp"
                 android:textStyle="bold"
                 android:textColor="#2196F3"/>
 
-            <LinearLayout
+            <RatingBar
+                android:id="@+id/ratingComentario"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:numStars="5"
+                android:rating="5"
+                android:stepSize="1" />
+
+            <EditText
+                android:id="@+id/inputComentario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:padding="12dp"
-                android:orientation="vertical"
-                android:background="#FFFFFF">
+                android:layout_marginTop="8dp"
+                android:hint="Comparte tu opinión"
+                android:inputType="textCapSentences|textMultiLine"
+                android:maxLength="300"
+                android:minLines="2" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Víctor  ★★★★★"
-                    android:textColor="#2196F3"
-                    android:textSize="15sp"
-                    android:textStyle="bold"/>
+            <Button
+                android:id="@+id/btnPublicarComentario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Publicar comentario" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="Excelente ubicación y el anfitrión muy preocupado. Excelente experiencia."
-                    android:textColor="#555555"
-                    android:textSize="14sp"/>
-
-            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/contenedorComentarios"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="vertical" />
 
         </LinearLayout>
 

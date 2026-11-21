@@ -39,7 +39,13 @@ public class AlojamientoAdapter extends RecyclerView.Adapter<AlojamientoAdapter.
 
         holder.txtNombre.setText(alojamiento.getNombre());
         holder.txtDescripcion.setText(alojamiento.getDescripcion());
-        holder.txtEstrellas.setText(alojamiento.getEstrellas() + " estrellas");
+        if (alojamiento.getCantidadOpiniones() > 0) {
+            holder.txtEstrellas.setText(String.format(java.util.Locale.getDefault(),
+                    "%.1f ★ (%d opiniones)", alojamiento.getPromedioCalificacion(),
+                    alojamiento.getCantidadOpiniones()));
+        } else {
+            holder.txtEstrellas.setText("Sin opiniones");
+        }
         holder.txtPrecio.setText("$" + (int) alojamiento.getPrecio() + " por noche");
 
         holder.imgAlojamiento.setImageResource(
