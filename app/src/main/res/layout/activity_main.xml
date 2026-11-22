@@ -10,15 +10,33 @@
 
     <!-- ENCABEZADO -->
 
-    <TextView
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="147dp"
-        android:background="#202020"
-        android:gravity="center"
-        android:text="Pipabnb.com"
-        android:textColor="#FFFFFF"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:background="#202020">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Pipabnb.com"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/btnCerrarSesionUsuario"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_gravity="end|bottom"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:paddingHorizontal="12dp"
+            android:text="Cerrar sesión"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp" />
+    </FrameLayout>
 
     <!-- CONTENIDO PRINCIPAL -->
     <LinearLayout
@@ -35,6 +53,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Encuentra un destino..."
+            android:textColor="#000000"
+            android:textColorHint="#000000"
             android:imeOptions="actionSearch"
             android:inputType="text"
             android:singleLine="true" />
@@ -98,7 +118,7 @@
             android:layout_height="wrap_content"
             android:padding="12dp"
             android:text="No encontramos alojamientos. Prueba otro destino o borra el texto y pulsa Buscar para ver todos."
-            android:textColor="#666666"
+            android:textColor="#000000"
             android:visibility="gone" />
 
         <androidx.recyclerview.widget.RecyclerView

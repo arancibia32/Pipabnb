@@ -1,9 +1,9 @@
-package com.example.pipabnb.models; // Definido en la carpeta models [1.1.1]
+package com.example.pipabnb.models;
 
 import java.util.ArrayList;
 
 public class Alojamiento {
-    private String id; // Requerido para actualizar/eliminar en Firebase [1.1.1]
+    private String id;
     private String nombre;
     private String descripcion;
     private int estrellas;
@@ -14,14 +14,15 @@ public class Alojamiento {
     private ArrayList<String> servicios;
     private double promedioCalificacion;
     private int cantidadOpiniones;
+    private double latitud;
+    private double longitud;
+    private String ciudad;
 
-    // 1. Constructor vacío obligatorio para la lectura en Firebase [1.2.4]
     public Alojamiento() {
         this.fotos = new ArrayList<>();
         this.servicios = new ArrayList<>();
     }
 
-    // 2. Constructor de 7 parámetros usado en tu GestionAlojamientoActivity [1.1.1]
     public Alojamiento(String id, String nombre, String descripcion, int estrellas, boolean favorito, double precio, String foto) {
         this.id = id;
         this.nombre = nombre;
@@ -34,7 +35,6 @@ public class Alojamiento {
         this.servicios = new ArrayList<>();
     }
 
-    // Getters y Setters públicos para el mapeo automático de Firebase [1.2.4]
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
 
@@ -65,4 +65,10 @@ public class Alojamiento {
     public void setPromedioCalificacion(double promedioCalificacion) { this.promedioCalificacion = promedioCalificacion; }
     public int getCantidadOpiniones() { return cantidadOpiniones; }
     public void setCantidadOpiniones(int cantidadOpiniones) { this.cantidadOpiniones = cantidadOpiniones; }
+    public double getLatitud() { return latitud; }
+    public void setLatitud(double latitud) { this.latitud = latitud; }
+    public double getLongitud() { return longitud; }
+    public void setLongitud(double longitud) { this.longitud = longitud; }
+    public String getCiudad() { return ciudad; }
+    public void setCiudad(String ciudad) { this.ciudad = ciudad; }
 }

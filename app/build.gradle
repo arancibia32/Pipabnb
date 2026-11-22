@@ -49,4 +49,5 @@ dependencies {
 
     // Dependencia para Realtime Database
     implementation 'com.google.firebase:firebase-database'
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
 }

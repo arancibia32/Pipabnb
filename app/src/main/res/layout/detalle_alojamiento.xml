@@ -65,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:text="♡"
                     android:textSize="32sp"
-                    android:textColor="#777777"
+                    android:textColor="#000000"
                     android:gravity="center"/>
 
                 <TextView
@@ -75,7 +75,7 @@
                     android:layout_weight="1"
                     android:text="Departamento Peñuelas, Coquimbo"
                     android:textSize="22sp"
-                    android:textColor="#666666"
+                    android:textColor="#000000"
                     android:gravity="center"/>
 
                 <View
@@ -88,15 +88,17 @@
             <ImageView
                 android:id="@+id/imagenPrincipal"
                 android:layout_width="match_parent"
-                android:layout_height="175dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
+                android:adjustViewBounds="true"
                 android:background="#FFFFFF"
 
                 android:contentDescription="Imagen principal del alojamiento"
-                android:scaleType="centerCrop"/>
+                android:scaleType="fitCenter"/>
 
             <!-- IMÁGENES SECUNDARIAS -->
             <LinearLayout
+                android:id="@+id/galeriaSecundaria"
                 android:layout_width="match_parent"
                 android:layout_height="105dp"
                 android:layout_marginTop="5dp"
@@ -111,7 +113,7 @@
                     android:background="#FFFFFF"
 
                     android:contentDescription="Segunda imagen del alojamiento"
-                    android:scaleType="centerCrop"/>
+                    android:scaleType="fitCenter"/>
 
                 <ImageView
                     android:id="@+id/imagenSecundaria2"
@@ -122,7 +124,7 @@
                     android:background="#FFFFFF"
 
                     android:contentDescription="Tercera imagen del alojamiento"
-                    android:scaleType="centerCrop"/>
+                    android:scaleType="fitCenter"/>
 
             </LinearLayout>
 
@@ -148,7 +150,7 @@
                     android:layout_weight="1"
                     android:text="4.2 (148 reseñas)"
                     android:textSize="13sp"
-                    android:textColor="#777777"
+                    android:textColor="#000000"
                     android:layout_marginStart="8dp"/>
 
                 <TextView
@@ -157,7 +159,7 @@
                     android:layout_height="wrap_content"
                     android:text="$60.000\npor noche"
                     android:textSize="15sp"
-                    android:textColor="#777777"
+                    android:textColor="#000000"
                     android:gravity="center"/>
 
             </LinearLayout>
@@ -169,7 +171,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
                 android:text="Departamento frente a la playa en sector Peñuelas, Coquimbo. Ideal para una estadía cómoda y familiar."
-                android:textColor="#666666"
+                android:textColor="#000000"
                 android:textSize="14sp"/>
 
             <!-- SERVICIOS -->
@@ -189,7 +191,7 @@
                 android:layout_marginTop="10dp"
                 android:text="Cargando servicios..."
                 android:textSize="13sp"
-                android:textColor="#555555"/>
+                android:textColor="#000000"/>
 
             <!-- COMENTARIOS -->
             <TextView
@@ -204,12 +206,13 @@
 
             <RatingBar
                 android:id="@+id/ratingComentario"
-                style="?android:attr/ratingBarStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
+                android:contentDescription="Selecciona una calificación de una a cinco estrellas"
+                android:isIndicator="false"
                 android:numStars="5"
-                android:rating="5"
+                android:rating="0"
                 android:stepSize="1" />
 
             <EditText
@@ -218,6 +221,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:hint="Comparte tu opinión"
+                android:textColor="#000000"
+                android:textColorHint="#000000"
                 android:inputType="textCapSentences|textMultiLine"
                 android:maxLength="300"
                 android:minLines="2" />

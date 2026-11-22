@@ -5,7 +5,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.content.Intent;
 
 import androidx.annotation.NonNull;
@@ -53,15 +52,6 @@ public class FavoritoAdapter extends RecyclerView.Adapter<FavoritoAdapter.Favori
                 notifyItemRemoved(posicion);
             }
         });
-/*
-        holder.btnDetalle.setOnClickListener(v ->
-                Toast.makeText(
-                        v.getContext(),
-                        lugar.getNombre(),
-                        Toast.LENGTH_SHORT
-                ).show()
-        );
-  */
         View.OnClickListener abrirDetalle = v -> {
             Intent intent = new Intent(
                     v.getContext(),

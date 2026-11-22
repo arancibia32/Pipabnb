@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pipabnb.models.Alojamiento;
+import com.example.pipabnb.data.FotoUtils;
 
 import java.util.ArrayList;
 
@@ -38,7 +39,11 @@ public class AlojamientoAdapter extends RecyclerView.Adapter<AlojamientoAdapter.
         Alojamiento alojamiento = alojamientos.get(position);
 
         holder.txtNombre.setText(alojamiento.getNombre());
-        holder.txtDescripcion.setText(alojamiento.getDescripcion());
+        String descripcion = alojamiento.getDescripcion();
+        if (alojamiento.getCiudad() != null && !alojamiento.getCiudad().trim().isEmpty()) {
+            descripcion = alojamiento.getCiudad() + "  •  " + descripcion;
+        }
+        holder.txtDescripcion.setText(descripcion);
         if (alojamiento.getCantidadOpiniones() > 0) {
             holder.txtEstrellas.setText(String.format(java.util.Locale.getDefault(),
                     "%.1f ★ (%d opiniones)", alojamiento.getPromedioCalificacion(),
@@ -48,16 +53,16 @@ public class AlojamientoAdapter extends RecyclerView.Adapter<AlojamientoAdapter.
         }
         holder.txtPrecio.setText("$" + (int) alojamiento.getPrecio() + " por noche");
 
-        holder.imgAlojamiento.setImageResource(
-                R.drawable.ic_launcher_background
-        );
+        String imagen = alojamiento.getFoto();
+        if (alojamiento.getFotos() != null && !alojamiento.getFotos().isEmpty()) {
+            imagen = alojamiento.getFotos().get(0);
+        }
+        FotoUtils.mostrar(holder.imgAlojamiento, imagen);
 
         holder.itemView.setOnClickListener(v -> {
             if (v.getContext() instanceof GestionAlojamientoActivity) {
-                // 1. Si estamos en la gestión, auto-rellenamos el formulario de esa pantalla [1.1.1]
                 ((GestionAlojamientoActivity) v.getContext()).cargarDatosAlojamiento(alojamiento);
             } else {
-                // 2. Si estamos en otra pantalla, abrimos el detalle normal [1.1.1]
                 Intent intent = new Intent(v.getContext(), DetalleAlojamientoActivity.class);
                 intent.putExtra("id", alojamiento.getId());
                 intent.putExtra("favorito", alojamiento.isFavorito());
@@ -66,6 +71,8 @@ public class AlojamientoAdapter extends RecyclerView.Adapter<AlojamientoAdapter.
                 intent.putExtra("descripcion", alojamiento.getDescripcion());
                 intent.putExtra("estrellas", alojamiento.getEstrellas());
                 intent.putStringArrayListExtra("servicios", alojamiento.getServicios());
+                intent.putExtra("latitud", alojamiento.getLatitud());
+                intent.putExtra("longitud", alojamiento.getLongitud());
                 v.getContext().startActivity(intent);
             }
         });

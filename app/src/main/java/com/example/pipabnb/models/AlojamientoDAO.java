@@ -10,11 +10,9 @@ public class AlojamientoDAO {
     private DatabaseReference dbRef;
 
     public AlojamientoDAO() {
-        // Conexion al nodo alojamientos
         dbRef = FirebaseDatabase.getInstance().getReference("alojamientos");
     }
 
-    // 1. CREATE (Crear nuevo alojamiento)
     public void guardarAlojamiento(Alojamiento alojamiento) {
         String idUnico = dbRef.push().getKey();
         alojamiento.setId(idUnico);
@@ -23,33 +21,32 @@ public class AlojamientoDAO {
         }
     }
 
-    // 2. READ (Leer todos los alojamientos en tiempo real)
     public void obtenerAlojamientos(ValueEventListener listener) {
         dbRef.addValueEventListener(listener);
     }
 
-    // 3. UPDATE COMPLETO (Actualizar todos los campos de un alojamiento)
     public void actualizarAlojamiento(Alojamiento alojamiento) {
         if (alojamiento.getId() != null) {
             Map<String, Object> valores = new HashMap<>();
             valores.put("nombre", alojamiento.getNombre());
             valores.put("descripcion", alojamiento.getDescripcion());
-            valores.put("estrellas", alojamiento.getEstrellas());
             valores.put("precio", alojamiento.getPrecio());
             valores.put("foto", alojamiento.getFoto());
+            valores.put("fotos", alojamiento.getFotos());
             valores.put("servicios", alojamiento.getServicios());
+            valores.put("latitud", alojamiento.getLatitud());
+            valores.put("longitud", alojamiento.getLongitud());
+            valores.put("ciudad", alojamiento.getCiudad());
             dbRef.child(alojamiento.getId()).updateChildren(valores);
         }
     }
 
-    // 4. UPDATE PARCIAL (Cambiar únicamente el estado de favorito de un ID) [1.1.1]
     public void cambiarFavorito(String id, boolean esFavorito) {
         if (id != null) {
             dbRef.child(id).child("favorito").setValue(esFavorito);
         }
     }
 
-    // 5. DELETE (Eliminar un alojamiento de Firebase)
     public void eliminarAlojamiento(String id) {
         if (id != null) {
             dbRef.child(id).removeValue();

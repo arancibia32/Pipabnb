@@ -13,6 +13,14 @@ xmlns:tools="http://schemas.android.com/tools">
     android:theme="@style/Theme.Pipabnb">
 
     <activity
+        android:name=".RegistroActivity"
+        android:exported="false" />
+
+    <activity
+        android:name=".SeleccionarUbicacionActivity"
+        android:exported="false" />
+
+    <activity
         android:name=".MapaActivity"
         android:exported="false" />
 

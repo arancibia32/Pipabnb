@@ -65,6 +65,7 @@ public class Pantalla_principal extends AppCompatActivity {
         cargarBusquedasRecientes();
         escucharAlojamientos();
         configurarNavegacion();
+        findViewById(R.id.btnCerrarSesionUsuario).setOnClickListener(v -> cerrarSesion());
 
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
@@ -147,7 +148,8 @@ public class Pantalla_principal extends AppCompatActivity {
 
     private boolean coincide(Alojamiento alojamiento, String filtro) {
         if (normalizar(alojamiento.getNombre()).contains(filtro) ||
-                normalizar(alojamiento.getDescripcion()).contains(filtro)) return true;
+                normalizar(alojamiento.getDescripcion()).contains(filtro) ||
+                normalizar(alojamiento.getCiudad()).contains(filtro)) return true;
         if (alojamiento.getServicios() != null) {
             for (String servicio : alojamiento.getServicios()) {
                 if (normalizar(servicio).contains(filtro)) return true;
@@ -192,12 +194,15 @@ public class Pantalla_principal extends AppCompatActivity {
                 startActivity(new Intent(this, MapaActivity.class));
                 return true;
             }
-            if (id == R.id.nav_perfil) {
-                Toast.makeText(this, "Perfil disponible próximamente", Toast.LENGTH_SHORT).show();
-                return false;
-            }
             return false;
         });
+    }
+
+    private void cerrarSesion() {
+        getSharedPreferences("usuario", MODE_PRIVATE).edit().clear().apply();
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     @Override
