@@ -190,10 +190,27 @@ public class DetalleAlojamientoActivity extends AppCompatActivity {
         });
     }
 
+    private String filtro(String mensaje){
+
+
+        var correccion =  mensaje.replace("paola", "profesora Paola");
+        correccion =  correccion.replace("palabrafea", "❤\uFE0F");
+        correccion =  correccion.replace("odio", "amo");
+
+
+        return correccion;
+    }
+
     private void agregarComentario(Comentario comentario) {
         TextView vista = new TextView(this);
         String estrellas = new String(new char[comentario.getCalificacion()]).replace("\0", "★");
-        vista.setText(comentario.getAutor() + "  " + estrellas + "\n" + comentario.getTexto());
+
+        var palabra = comentario.getTexto();
+        palabra = palabra.toLowerCase();
+        var tt = filtro(palabra);
+
+        vista.setText(comentario.getAutor() + "  " + estrellas + "\n" + tt);
+
         vista.setTextColor(Color.parseColor("#444444"));
         vista.setTextSize(14);
         vista.setPadding(dp(12), dp(10), dp(12), dp(10));

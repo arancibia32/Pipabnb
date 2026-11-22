@@ -10,7 +10,7 @@ public class AlojamientoDAO {
     private DatabaseReference dbRef;
 
     public AlojamientoDAO() {
-        // Conexión al nodo "alojamientos" en tu Realtime Database [1.1.1]
+        // Conexion al nodo alojamientos
         dbRef = FirebaseDatabase.getInstance().getReference("alojamientos");
     }
 
